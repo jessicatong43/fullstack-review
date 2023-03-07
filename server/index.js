@@ -10,11 +10,10 @@ app.use(express.json());
 // this server must serve those files when requested.
 
 app.post('/repos', function (req, res) {
-  github.getReposByUsername(req.body, res)
-  res.end('Post sent!');
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
+  github.getReposByUsername(req.body, res);
 });
 
 app.get('/repos', function (req, res) {

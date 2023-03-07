@@ -1,17 +1,28 @@
 const axios = require('axios');
 const config = require('../config.js');
+const db = require('../database/index.js');
 
 let getReposByUsername = (reqBody, res) => {
   var username = reqBody.username;
   // Use the axios module to request repos for a specific user from the github API
-  axios.post(`http://github.com/${username}?tab=repositories`, {
-      username: `${username}`
-    })
+  axios.get(`http://api.github.com/users/${username}/repos`)
     .then(function(res) {
-      console.log('Response status: ', res.status);
+      let repoData = res.data.map(repo => {
+        return {
+          id: repo.id,
+          title: repo.name,
+          lastUpdated: repo.updated_at,
+          starCount: repo.stargazers_count
+        };
+      })
+      console.log('REPODATA: ', repoData);
+      db.save(repoData);
     })
     .catch(function(error) {
-      console.log('ERROR: ', error);
+      console.log('GET ERROR: ', error);
+    })
+    .finally(function() {
+      console.log('Repo data retrieved.')
     });
 
 
