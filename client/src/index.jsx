@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import Axios from 'axios';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
@@ -10,6 +11,9 @@ const App = () => {
 
   const search = (term) => {
     console.log(`${term} was searched`);
+    Axios.post('/repos', {
+      username: `${term}`
+    });
   }
 
   return (
