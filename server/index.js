@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const github = require('../helpers/github.js');
+const db = require('../database');
 let app = express();
 
 app.use(express.static('client/dist'));
@@ -13,12 +14,15 @@ app.post('/repos', function (req, res) {
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
-  github.getReposByUsername(req.body, res);
+  github.getReposByUsername(req.body.username, res);
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
   // This route should send back the top 25 repos
+  db.getAll()
+    .then((top25) => {
+      res.send(top25);
+    })
 });
 
 let port = 1128;

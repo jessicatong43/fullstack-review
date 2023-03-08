@@ -10,10 +10,15 @@ const App = () => {
   const [repos, setRepos] = useState([]);
 
   const search = (term) => {
-    console.log(`${term} was searched`);
     Axios.post('/repos', {
       username: `${term}`
-    });
+    })
+    .then(() => {
+      return axios.get('/repos')
+    })
+    .then((repoData) => {
+      setRepos(repoData)
+    })
   }
 
   return (
